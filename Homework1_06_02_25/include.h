@@ -13,6 +13,8 @@ struct Book
 };
 extern Book* arr;
 extern int n, i;
+void borrow_a_book();
+void return_a_book();
 void search_system();
 void print_books();
 void print_books(int);
