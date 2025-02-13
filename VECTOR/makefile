@@ -1,5 +1,5 @@
 COM = g++
-SRCS = main.cpp vector_impl.cpp
+SRCS = main.cpp
 
 OBJS = $(SRCS:.cpp=.o)
 TARGET = a.out
