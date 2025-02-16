@@ -14,11 +14,11 @@ void add_book()
     }
     cout << "Enter title: ";
     cin.ignore();
-    cin >> new_book.title;
+    getline(cin, new_book.title);
     cout << "Enter author: ";
-    cin >> new_book.author;
+    getline(cin, new_book.author);
     cout << "Enter ISBN: ";
-    cin >> new_book.isbn;
+    getline(cin, new_book.isbn);
     cout << "If it is accessible, print 1, otherwise print 0: ";
     cin >> new_book.available;
     arr[i++]= new_book;
