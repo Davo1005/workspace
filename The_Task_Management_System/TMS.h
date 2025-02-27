@@ -1,81 +1,134 @@
+#ifndef TMS_H
+#define TMS_H
+#include "Task.h"
+#include "TaskManeger.h"
 #include <filesystem>
 #include <fstream>	
 #include <iostream>
 #include <string>
 #include <vector>
-
 using namespace std;
 using namespace std::filesystem;
 
-//class Taks;
+class Task;
+int userid=0;
+
+void savetofile(const string& path);
+bool userexists(const string& fpath, const string& uname, const string& pass);
 
 class User
 {
-	prevate:
-	 string username;
-	 string password;
-	 vector<Task*> tasks;
+	private:
+		int user_id;
+		string username;
+		string password;
+		vector<Task*> tasks;
 
 	public:
-	 User(const string& usarname, const string& password);
-	 User(const User& other);
-	 User(User&& other) noexcept;
-	 ~User();
-	 void addTask(Task* task);
-	 void deleteTask(const string& title);
-	 void editTask(const string& title, const Task& updatedTask);
-	 void listTasks() const;
-	 Task* searchTask(const string& title);
-
-
-};
-
-class Task 
-{
-	prevate:
-		string title;
-		string description;
-		string deadline;
-		enum priority
+		User(const string& usarname, const string& password) : user_id(userid++), username(usarname), password(password)
 		{
-			Low=1,
-			Medium,
-			High
-		};
-		string category;
-		bool completed;
+			string path = "fsystem/userinfo.txt";
+		
+			if(!(userexists(path, usarname, password)))
+			{
+				savetofile(path);
+		
+			}
+			else
+			{
+				cout << "username has already used. choose another one or sign in";
+			}
+		}
+		
 
-	public:
-		Task();
-		Task(const std::string& title, const std::string& description, const std::string& deadline, const std::string& category, int priority);
-		Task(const Task& other);
-		Task(Task&& other) noexcept;
-		~Task();
-		string getTitle() const;
-		string getDescription() const;
-		string getDeadline() const;
-		string getCategory() const;
-		int getPriority() const;
-		bool isCompleted() const;
-		string getTitle() const;
-	   
+		User(const User& other);
+		
+		User(User&& other) noexcept;
+
+		~User()
+		{
+			for (auto& task : tasks) {
+					delete task;
+				}
+		}
+
+		void addTask(Task* task)
+		{
+			tasks.push_back(task);
+		}
+
+		void deleteTask(int& task_id,const string& title)
+		{	
+			for( auto it = tasks.begin(); it!= tasks.end(); ++it)
+			{
+				if((*it)->gettitle() == title && (*it)->get_task_id() == task_id)
+				{
+					delete *it;
+					tasks.erase(it);
+					cout << "task has been deleted";
+					return;		
+				}
+			}
+			cout << "there is no taks with that title";
+		}
+		string getusername() const 
+		{ 
+			return username; 
+		}
+
+		string  getpassword() const 
+		{ 
+			return password; 
+		}
+		int getuser_id() const 
+		{ 
+			return user_id; 
+		}
+		void editTask( string& title,  Task& updatedtask)
+		{
+			for( auto& task : tasks)
+				{
+						if(task->gettitle() == title)
+						{
+							task->settitle(&updatedtask, updatedtask.gettitle());
+							task->setdescription(&updatedtask, updatedtask.getdescription());
+							task->setdeadline(&updatedtask, updatedtask.getdeadline());
+							task->setcategory(&updatedtask, updatedtask.getcategory());
+							task->setpriority(&updatedtask, updatedtask.getpriority());
+							cout << "task has been updated";
+							return;
+						}
+				}
+			cout << "there is no taks with that title";
+
+		}	
+
+		void listtasks() const
+		{
+			for (const auto& task : tasks) 
+			{
+				cout << "title: " << task->gettitle() << endl;
+			}
+		}
+
+		Task* searchtask(const string& title)
+		{
+			for(const auto& task : tasks)
+			{
+				if(task->gettitle() == title) 
+				{
+					
+						cout << "the task has found";
+						return task;
+				}
+
+			}
+			cout << "the task has not found";
+		}
+		
+
 };
 
-class TaskManager
-{	
-	preavte:
-		vector<User*> users;
-		User* loggedInUser;
-	prevate:
-		TaskManager();
-		TaskManager(const TaskManager& other);
-		askManager(TaskManager&& other) noexcept;
-		~TaskManager(); → Destructor (deallocate users);
-		void registerUser(const std::string& username, const std::string& password);
-		bool login(const std::string& username, const std::string& password);
-		void logout();
-		void addTaskForUser(const Task& task);
-		void deleteTaskForUser(const string& title);
-		void editTaskForUser(const std::string& title, const Task& updatedTask); 
-		void displayTasksForUser() const;
-};
+#endif	
+
+

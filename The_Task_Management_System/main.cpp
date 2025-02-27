@@ -1,15 +1,9 @@
-#include "TMS.h"
 
+#include "TaskManeger.h"
+
+#include "TMS.h"
+#include "Task.h"
+#include <iostream>
 int main()
 {
-			
-	path dirpath = "fsystem";
-       	if(!exists(dirpath))
-	{
-		create_directory(dirpath);
-	}	
-	path filepath = dirpath / "userInfo";
-	ofstream file(filepath);
-
-
 }
