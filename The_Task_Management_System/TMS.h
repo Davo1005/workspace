@@ -14,6 +14,7 @@ int userid=0;
 
 void savetofile(const string& pathstr, int user_id ,string usarname, string password);
 bool userexists(const string& fpath, const string& uname, const string& pass);
+string sha256(const std::string& input);
 
 class User
 {
@@ -24,21 +25,25 @@ class User
 		vector<Task*> tasks;
 
 	public:
-		User(const string& usarname, const string& password) : user_id(userid++), username(usarname), password(password)
+	
+		User(const string& username, const string& password) : user_id(userid++), username(username), password(sha256(password))
 		{
 			string path = "fsystem/userinfo.txt";
             
 		
-			if(!(userexists(path, usarname, password)))
+			if(!(userexists(path, username, password)))
 			{
-				savetofile(path, user_id ,usarname, password);
+				savetofile(path, user_id ,username, password);
 		
 			}
 			else
 			{
 				cout << "username has already used. choose another one or sign in";
 			}
-            cout << "user has been created";
+		}
+		User(const string& usarname, const string& password, bool forloading) : user_id(userid++), username(usarname), password(password)
+		{
+			
 		}
 		
 
@@ -91,11 +96,11 @@ class User
 				{
 						if(task->gettitle() == title)
 						{
-							task->settitle(&updatedtask, updatedtask.gettitle());
-							task->setdescription(&updatedtask, updatedtask.getdescription());
-							task->setdeadline(&updatedtask, updatedtask.getdeadline());
-							task->setcategory(&updatedtask, updatedtask.getcategory());
-							task->setpriority(&updatedtask, updatedtask.getpriority());
+							task->settitle(updatedtask, updatedtask.gettitle());
+							task->setdescription(updatedtask, updatedtask.getdescription());
+							task->setdeadline(updatedtask, updatedtask.getdeadline());
+							task->setcategory(updatedtask, updatedtask.getcategory());
+							task->setpriority(updatedtask, updatedtask.getpriority());
 							cout << "task has been updated";
 							return;
 						}

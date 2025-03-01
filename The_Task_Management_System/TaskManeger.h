@@ -11,8 +11,8 @@ class TaskManager
 {	
 	private:
 		vector<User*> users;
-		User* loggedInUser;
 	public:
+		User* loggedInUser;
 		TaskManager()
 		{
 			loggedInUser = nullptr;
@@ -82,7 +82,7 @@ class TaskManager
 			{
 				if(user->getuser_id() == loggedInUser->getuser_id())
 				{
-					user->editTask(title, updatedTask);
+					loggedInUser->editTask(title, updatedTask);
 					return;
 				}
 			}
@@ -132,9 +132,10 @@ class TaskManager
 		string username, password;
 		while(file >> user_id >> username >> password)
 		{
-			users.push_back(new User(username, password));
+			users.push_back(new User(username, password, true));
 		}
 		file.close();
 	}
+	
 };
 #endif

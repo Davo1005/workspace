@@ -35,11 +35,12 @@ class Task
 		bool completed;
 
 	public:
-		Task();
+        Task() = default;
 		Task(const string& title, const string& description, const string& deadline, const string& category, int priority, int uid): id(task_id++), uid(uid), title(title), description(description), deadline(deadline), category(category), priority(static_cast<Priority>(priority)),  completed(false) {}
 		Task(const Task& other);
 		Task(Task&& other) noexcept
-        {   
+        {   uid = other.uid;
+            id = other.id;
             title = other.title;
             description = other.description;
             deadline = other.deadline;
@@ -88,35 +89,34 @@ class Task
             return static_cast<int>(priority); 
         }
 
-        void settitle(Task* task,string str)
+        void settitle(Task& task,string str)
         {
-            task->title = str;
+            task.title = str;
         }
-        void setdescription(Task* task,string str)
+        void setdescription(Task& task,string str)
         {
-            task->description = str;
+            task.description = str;
         }
-        void setdeadline(Task* task,string str)
+        void setdeadline(Task& task,string str)
         {
-            task->deadline = str;
+            task.deadline = str;
         }   
-        void setcategory(Task* task,string str)
+        void setcategory(Task& task,string str)
         {
-            task->category = str;
+            task.category = str;
         }
-        void setpriority(Task* task,int pr)
+        void setpriority(Task& task,int pr)
         {
-            if (task != nullptr) { 
+            
                 if (pr >= 1 && pr <= 3) { 
-                    task->priority = static_cast<Priority>(pr); 
+                    task.priority = static_cast<Priority>(pr); 
                     return;
                 } 
-            }
             cout << "invalid priority";
         }
-        void setcompleted(Task* task,bool b)
+        void setcompleted(Task& task,bool b)
         {
-            task->completed = b;
+            task.completed = b;
         }
     
     };

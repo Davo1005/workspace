@@ -11,7 +11,7 @@ using namespace std;
 
 bool userexists(const string& path, const string& uname, const string& pass) 
 {
-
+	int uid;
 	ifstream file(path);
 	if(!file.is_open())
 	{
@@ -19,7 +19,7 @@ bool userexists(const string& path, const string& uname, const string& pass)
             	return false;	
 	}
 	string username, userpasswd;
-	while(file >> username >> userpasswd)
+	while(file >> uid >> username >> userpasswd)
 	{
 		if(username == uname && userpasswd == pass)
 		{
@@ -36,7 +36,7 @@ void savetofile(const string& pathstr, int user_id ,string username, string pass
 		ofstream file(pathstr, ios::app);
         if (file.is_open()) {
 			
-            file << user_id << username << " " << password << endl;
+            file << user_id << " " << username << " " << password  << endl;
             file.close();
         }
     }
