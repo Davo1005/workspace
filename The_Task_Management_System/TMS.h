@@ -10,10 +10,9 @@
 using namespace std;
 using namespace std::filesystem;
 
-class Task;
 int userid=0;
 
-void savetofile(const string& path);
+void savetofile(const string& pathstr, int user_id ,string usarname, string password);
 bool userexists(const string& fpath, const string& uname, const string& pass);
 
 class User
@@ -28,16 +27,18 @@ class User
 		User(const string& usarname, const string& password) : user_id(userid++), username(usarname), password(password)
 		{
 			string path = "fsystem/userinfo.txt";
+            
 		
 			if(!(userexists(path, usarname, password)))
 			{
-				savetofile(path);
+				savetofile(path, user_id ,usarname, password);
 		
 			}
 			else
 			{
 				cout << "username has already used. choose another one or sign in";
 			}
+            cout << "user has been created";
 		}
 		
 
@@ -130,5 +131,3 @@ class User
 };
 
 #endif	
-
-

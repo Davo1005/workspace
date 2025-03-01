@@ -1,9 +1,10 @@
 #ifndef TaskManager_H
 #define TaskManager_H 
 #include "TMS.h"
+#include <vector>
 
 using namespace std;    
-
+ 
 
 
 class TaskManager
@@ -12,7 +13,10 @@ class TaskManager
 		vector<User*> users;
 		User* loggedInUser;
 	public:
-		TaskManager();
+		TaskManager()
+		{
+			loggedInUser = nullptr;
+		}
 		TaskManager(const TaskManager& other)
 		{
 			users = other.users;
@@ -30,9 +34,26 @@ class TaskManager
 				delete user;
 			}
 		}
-		void registerUser(const string& username, const string& password);
-		bool login(const string& username, const string& password);
-		void logout();
+		void registerUser(const string& username, const string& password)
+		{
+			users.push_back(new User(username, password));
+		}
+		bool login(const string& username, const string& password)
+		{
+			for(auto& user : users)
+			{
+				if(user->getusername() == username && user->getpassword() == password)
+				{
+					loggedInUser = user;
+					return true;
+				}
+			}
+			return false;
+		}
+		void logout()
+		{
+			loggedInUser = nullptr;
+		}
 		void addTaskForUser( int user_id, const Task& task)
 		{
 			for(const auto& user : users)
@@ -100,7 +121,20 @@ class TaskManager
 			}
 		}
         
-        
+    void loadfromfile(const string pathstr)
+	{
+		ifstream file(pathstr);
+		if(!file.is_open())
+		{
+			cerr << "error: could not open file " << pathstr << endl;
+		}
+		int user_id;
+		string username, password;
+		while(file >> user_id >> username >> password)
+		{
+			users.push_back(new User(username, password));
+		}
+		file.close();
+	}
 };
-
 #endif

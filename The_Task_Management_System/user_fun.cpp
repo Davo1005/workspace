@@ -1,17 +1,21 @@
-#include "TMS.h"
+#include<vector>
+#include<string>
+#include<fstream>
+#include<iostream>
+using namespace std;
 
 
 
 
 
 
-bool userexists(const string& fpath, const string& uname, const string& pass) 
+bool userexists(const string& path, const string& uname, const string& pass) 
 {
-	path filepath = fpath;
-	ifstream file(filepath);
+
+	ifstream file(path);
 	if(!file.is_open())
 	{
-		cerr << "error: could not open file " << filepath << endl;
+		cerr << "error: could not open file " << path << endl;
             	return false;	
 	}
 	string username, userpasswd;
@@ -27,10 +31,14 @@ bool userexists(const string& fpath, const string& uname, const string& pass)
 	return false;
 }
 
-void savetofile(const string& path) {
-        ofstream file(path, ios::app);
+void savetofile(const string& pathstr, int user_id ,string username, string password){
+        
+		ofstream file(pathstr, ios::app);
         if (file.is_open()) {
-            file << username << " " << password << endl;
+			
+            file << user_id << username << " " << password << endl;
             file.close();
         }
     }
+
+	
